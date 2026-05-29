@@ -1,0 +1,32 @@
+body { background-color: rgba(0, 0, 0, 0); font-family: 'Arial Black', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; perspective: 1200px; overflow: hidden; }
+
+#contenedor-apuesta { background: #050506; color: #fff; width: 380px; padding: 22px; border: 1px solid #ff003c; box-shadow: 0 0 25px rgba(255, 0, 60, 0.3); transform-origin: bottom center; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease; }
+
+.oculto { opacity: 0; transform: translateY(120px) rotateX(-80deg) scale(0.8); pointer-events: none; }
+.mostrar { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); pointer-events: auto; }
+
+.header { text-align: center; margin-bottom: 20px; }
+.badge { background: #ff003c; color: #000; font-size: 12px; padding: 3px 12px; font-weight: 900; letter-spacing: 3px; }
+h2 { font-size: 13px; font-weight: 300; margin-top: 14px; color: #cccccc; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif; }
+
+.duelo-container { display: flex; width: 100%; height: 30px; background: #121214; border: 1px solid rgba(255, 0, 60, 0.2); overflow: hidden; }
+.barra { display: flex; align-items: center; padding: 0 10px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
+.si { background: #ff003c; color: #000; width: 50%; justify-content: flex-start; }
+.no { background: #ffffff; color: #000; width: 50%; justify-content: flex-end; }
+.perc { font-size: 16px; font-weight: 900; }
+
+.puntos-container { display: flex; justify-content: space-between; margin-top: 10px; }
+.bando-puntos { display: flex; flex-direction: column; width: 45%; transition: all 0.5s ease; }
+.si-puntos { align-items: flex-start; text-align: left; }
+.no-puntos { align-items: flex-end; text-align: right; }
+.label { font-size: 11px; font-weight: 900; letter-spacing: 1px; margin-bottom: 2px; }
+.si-puntos .label { color: #ff003c; }
+.no-puntos .label { color: #ffffff; }
+.puntos-num { font-size: 14px; font-weight: 900; color: #adadb8; letter-spacing: 0.5px; }
+
+.timer { text-align: center; font-size: 10px; color: #44444a; margin-top: 20px; letter-spacing: 2px; font-family: 'Segoe UI', sans-serif; }
+
+.barra, .bando-puntos { transition: all 0.5s ease; }
+.ganador { transform: scale(1.05); filter: drop-shadow(0 0 12px rgba(255, 0, 60, 0.8)); }
+.no.ganador { filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8)); }
+.perdedor { opacity: 0.15; filter: grayscale(100%); }

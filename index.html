@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duelo de Ludopatía</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+</head>
+<body>
+
+    <div id="contenedor-apuesta" class="oculto">
+        <div class="header">
+            <span class="badge">LUDOPATÍA ON</span>
+            <h2 id="titulo">¿CONSEGUIREMOS LA VICTORIA?</h2>
+        </div>
+
+        <div class="duelo-container">
+            <div id="progreso-si" class="barra si">
+                <span id="porcentaje-si" class="perc">50%</span>
+            </div>
+            <div id="progreso-no" class="barra no">
+                <span id="porcentaje-no" class="perc">50%</span>
+            </div>
+        </div>
+
+        <div class="puntos-container">
+            <div id="bando-si-puntos" class="bando-puntos si-puntos">
+                <span id="texto-opcion-si" class="label">SÍ</span>
+                <span id="puntos-si" class="puntos-num">0 PTS</span>
+            </div>
+            <div id="bando-no-puntos" class="bando-no-puntos no-puntos">
+                <span id="texto-opcion-no" class="label">NO</span>
+                <span id="puntos-no" class="puntos-num">0 PTS</span>
+            </div>
+        </div>
+        
+        <div id="tiempo" class="timer">ESPERANDO APUESTAS...</div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
