@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Widget Predicciones Dinámico</title>
+    <title>Widget Predicciones - Dinámico</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
 </head>
@@ -26,14 +26,16 @@
 
         <div class="puntos-container">
             <div class="bando-puntos si-puntos">
-                <span id="nombre-opcion-1" class="label">OPCIÓN 1</span>
+                <span id="nombre-opcion-1" class="label">---</span>
                 <span id="puntos-si" class="puntos-num">0 PTS</span>
             </div>
             <div class="bando-puntos no-puntos">
-                <span id="nombre-opcion-2" class="label">OPCIÓN 2</span>
+                <span id="nombre-opcion-2" class="label">---</span>
                 <span id="puntos-no" class="puntos-num">0 PTS</span>
             </div>
         </div>
+
+        <div id="timer-display" class="timer">QUEDAN: --S</div>
     </div>
 
     <script src="app.js"></script>
