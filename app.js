@@ -1,4 +1,4 @@
-const miCanal = "TU_USUARIO_DE_TWITCH"; 
+const miCanal = "creador"; 
 
 const contenedor = document.getElementById("contenedor-apuesta");
 const barraSi = document.getElementById("progreso-si");
