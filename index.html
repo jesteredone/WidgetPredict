@@ -3,43 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Widget Predicciones - Final</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Widget Predicciones Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+    <style>
+        /* ESTILOS INTEGRADOS */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0); [span_0](start_span)/* Transparente para OBS[span_0](end_span) */
+            font-family: 'Arial Black', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            [span_1](start_span)overflow: hidden;[span_1](end_span)
+        }
+
+        #contenedor-apuesta {
+            background: #050506; color: #fff;
+            width: 90vw; max-width: 500px; padding: 2em;
+            border: 1px solid #ff003c;
+            box-shadow: 0 0 25px rgba(255, 0, 60, 0.3);
+            transition: all 0.8s ease;
+            opacity: 0; transform: translateY(50px); [span_2](start_span)/* Empieza oculto[span_2](end_span) */
+        }
+
+        /* Clase para mostrar el widget */
+        #contenedor-apuesta.visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .header { text-align: center; margin-bottom: 1.5rem; }
+        .badge { background: #ff003c; color: #000; font-size: 0.8rem; padding: 0.3rem 1rem; font-weight: 900; }
+        h2 { font-size: 1rem; margin-top: 1rem; color: #cccccc; font-family: 'Segoe UI', sans-serif; }
+
+        .duelo-container { 
+            display: flex; width: 100%; height: 2.5rem; 
+            background: #121214; border: 1px solid rgba(255, 0, 60, 0.2); 
+            [span_3](start_span)overflow: hidden;[span_3](end_span)
+        }
+        
+        .barra { display: flex; align-items: center; padding: 0 10px; transition: width 0.8s ease; box-sizing: border-box; }
+        .si { background: #ff003c; color: #000; justify-content: flex-start; width: 50%; }
+        .no { background: #ffffff; color: #000; justify-content: flex-end; width: 50%; }
+        .perc { font-size: 1.2rem; font-weight: 900; }
+
+        .puntos-container { display: flex; justify-content: space-between; margin-top: 10px; }
+        .bando-puntos { display: flex; flex-direction: column; width: 45%; }
+        .label { font-size: 0.7rem; font-weight: 900; color: #ff003c; }
+        .puntos-num { font-size: 1rem; font-weight: 900; color: #adadb8; }
+
+        #timer-display {
+            text-align: center; font-size: 0.8rem; color: #ff003c; 
+            margin-top: 1.5rem; letter-spacing: 2px; font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-    <div id="contenedor-apuesta" class="oculto">
+    <div id="contenedor-apuesta">
         <div class="header">
             <span class="badge">LUDOPATÍA ON</span>
-            <h2 id="titulo">CARGANDO PREDICCIÓN...</h2>
+            <h2 id="titulo">ESPERANDO PREDICCIÓN...</h2>
         </div>
 
         <div class="duelo-container">
-            <div id="progreso-si" class="barra si">
-                <span id="porcentaje-si" class="perc">50%</span>
-            </div>
-            <div id="progreso-no" class="barra no">
-                <span id="porcentaje-no" class="perc">50%</span>
-            </div>
+            <div id="barra-1" class="barra si"><span id="perc-1" class="perc">50%</span></div>
+            <div id="barra-2" class="barra no"><span id="perc-2" class="perc">50%</span></div>
         </div>
 
         <div class="puntos-container">
-            <div class="bando-puntos si-puntos">
-                <span id="nombre-opcion-1" class="label">---</span>
-                <span id="puntos-si" class="puntos-num">0 PTS</span>
+            <div class="bando-puntos">
+                <span id="nom-1" class="label">OPCIÓN A</span>
+                <span id="pts-1" class="puntos-num">0 PTS</span>
             </div>
-            <div class="bando-puntos no-puntos">
-                <span id="nombre-opcion-2" class="label">---</span>
-                <span id="puntos-no" class="puntos-num">0 PTS</span>
+            <div class="bando-puntos" style="text-align: right;">
+                <span id="nom-2" class="label">OPCIÓN B</span>
+                <span id="pts-2" class="puntos-num">0 PTS</span>
             </div>
         </div>
 
-        <div id="timer-display" class="timer" style="display: block !important; opacity: 1 !important;">
-            QUEDAN: --S
-        </div>
+        <div id="timer-display">TIEMPO: --</div>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        [span_4](start_span)// CONFIGURACIÓN[span_4](end_span)
+        const miCanal = "creador"; 
+        const oAuthToken = "oauth:PEGA_AQUI_EL_TOKEN_DE_LA_FOTO"; 
+
+        const cont = document.getElementById("contenedor-apuesta");
+        const t1 = document.getElementById("nom-1"), t2 = document.getElementById("nom-2");
+        const p1 = document.getElementById("pts-1"), p2 = document.getElementById("pts-2");
+        const b1 = document.getElementById("barra-1"), b2 = document.getElementById("barra-2");
+        const pr1 = document.getElementById("perc-1"), pr2 = document.getElementById("perc-2");
+        const timer = document.getElementById("timer-display");
+        const titulo = document.getElementById("titulo");
+
+        let countdown;
+
+        function update(pts1, pts2, n1, n2) {
+            const total = pts1 + pts2;
+            let pc1 = 50, pc2 = 50;
+            if (total > 0) {
+                pc1 = Math.round((pts1 / total) * 100);
+                pc2 = 100 - pc1;
+            }
+            b1.style.width = pc1 + "%"; b2.style.width = pc2 + "%";
+            pr1.innerText = pc1 + "%"; pr2.innerText = pc2 + "%";
+            p1.innerText = pts1.toLocaleString() + " PTS";
+            p2.innerText = pts2.toLocaleString() + " PTS";
+            if(n1) t1.innerText = n1.toUpperCase();
+            if(n2) t2.innerText = n2.toUpperCase();
+        }
+
+        function startTimer(sec) {
+            clearInterval(countdown);
+            let left = sec;
+            timer.innerText = `QUEDAN: ${left}S`;
+            countdown = setInterval(() => {
+                left--;
+                timer.innerText = `QUEDAN: ${left}S`;
+                if(left <= 0) { clearInterval(countdown); timer.innerText = "CERRADO"; }
+            }, 1000);
+        }
+
+        [span_5](start_span)// TWITCH EVENTS[span_5](end_span)
+        ComfyJS.onPrediction = (e) => {
+            cont.classList.add("visible");
+            titulo.innerText = e.title.toUpperCase();
+            update(e.outcomes[0].channel_points, e.outcomes[1].channel_points, e.outcomes[0].title, e.outcomes[1].title);
+            if(e.prediction_window_seconds) startTimer(e.prediction_window_seconds);
+        };
+
+        ComfyJS.onPredictionEnd = () => {
+            [span_6](start_span)setTimeout(() => cont.classList.remove("visible"), 10000);[span_6](end_span)
+        };
+
+        [span_7](start_span)// INICIALIZACIÓN[span_7](end_span)
+        if(oAuthToken.includes("oauth:")) {
+            ComfyJS.Init(miCanal, oAuthToken);
+        }
+
+        // PRUEBA AL HACER CLICK
+        document.body.addEventListener("click", () => {
+            cont.classList.toggle("visible");
+            update(Math.floor(Math.random()*5000), Math.floor(Math.random()*5000), "VIVO", "MUERTO");
+            startTimer(60);
+        });
+    </script>
 </body>
 </html>
