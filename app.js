@@ -1,4 +1,4 @@
-const miCanal = "jesteredone"; 
+const miCanal = "creador"; 
 
 const contenedor = document.getElementById("contenedor-apuesta");
 const barraSi = document.getElementById("progreso-si");
